@@ -1,0 +1,14 @@
+{
+  "name": "TipJarz",
+  "description": "TipJarz is a Base Mini App built with Zara.",
+  "image": "https://dummyimage.com/1200x628/0a0b0d/ffffff.png&text=OG",
+  "external_url": "https://f0ccea74-6d73-4c5d-9d04-5fa0c630fe9e.vercel.app",
+  "properties": {
+    "app": {
+      "name": "TipJarz",
+      "description": "TipJarz is a Base Mini App built with Zara.",
+      "url": "https://f0ccea74-6d73-4c5d-9d04-5fa0c630fe9e.vercel.app",
+      "icon": "https://0co.to/images/zara-2.png"
+    }
+  }
+}
