@@ -1,43 +1,140 @@
-# TipJarz - Base Miniapp
+# TipJarz - Base Mini App
 
-A Base miniapp that allows creators to receive direct tips from their audience, fostering a direct monetization channel.
+A Base miniapp that allows creators to receive direct tips from their audience, fostering a direct monetization channel with gated content features.
 
-## Features
+## 🚀 Features
 
-- **Direct Tipping**: Send cryptocurrency tips directly to creators via simple in-frame interactions
-- **Tip-Gated Content**: Unlock exclusive content by tipping creators
-- **Social Proof**: Display recent tippers to encourage community engagement
-- **Real-time Updates**: Live tip tracking and notifications
-- **Mobile-First Design**: Optimized for mobile and frame experiences
+### Core Features
+- **Direct Tipping**: Send cryptocurrency tips directly to creators via Base network
+- **Tip-Gated Content**: Exclusive content unlocked after reaching tip thresholds
+- **Social Proof**: Public tip history to encourage community engagement
+- **Creator Profiles**: Customizable creator pages with bio and content
+- **Real-time Updates**: Live tip tracking and content unlocking
 
-## Tech Stack
-
-- **Framework**: Next.js 15 with App Router
-- **Blockchain**: Base network integration via OnchainKit
-- **Wallet**: MiniKit provider for seamless wallet interactions
-- **Styling**: Tailwind CSS with custom design system
+### Technical Features
+- **OnchainKit Integration**: Seamless wallet connection and transactions
+- **Supabase Backend**: Scalable database for user data and content
 - **TypeScript**: Full type safety throughout the application
+- **Responsive Design**: Mobile-first design optimized for all devices
+- **Error Handling**: Comprehensive error handling and user feedback
 
-## Getting Started
+## 🛠️ Tech Stack
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+- **Frontend**: Next.js 15, React 18, TypeScript
+- **Styling**: Tailwind CSS with custom design system
+- **Blockchain**: OnchainKit, Viem, Wagmi
+- **Database**: Supabase (PostgreSQL)
+- **Validation**: Zod
+- **Icons**: Lucide React
 
-2. **Set up environment variables**:
-   Copy `.env.local` and configure your API keys:
-   ```bash
-   NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_onchainkit_api_key
-   ```
+## 📋 Prerequisites
 
-3. **Run the development server**:
-   ```bash
-   npm run dev
-   ```
+Before you begin, ensure you have:
+- Node.js 18+ installed
+- A Supabase account and project
+- An OnchainKit API key
+- A Base wallet for testing
 
-4. **Open your browser**:
-   Navigate to [http://localhost:3000](http://localhost:3000)
+## 🚀 Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/vistara-apps/f0ccea74-6d73-4c5d-9d04-5fa0c630fe9e.git
+cd f0ccea74-6d73-4c5d-9d04-5fa0c630fe9e
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Environment Setup
+
+Copy the environment template and fill in your values:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your configuration:
+
+```env
+# OnchainKit Configuration
+NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_onchainkit_api_key_here
+
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Base Network Configuration (Optional)
+NEXT_PUBLIC_BASE_RPC_URL=https://mainnet.base.org
+
+# App Configuration
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### 4. Database Setup
+
+Create the following tables in your Supabase project:
+
+#### Creators Table
+```sql
+CREATE TABLE creators (
+  id SERIAL PRIMARY KEY,
+  creator_id VARCHAR(255) UNIQUE NOT NULL,
+  wallet_address VARCHAR(42) NOT NULL,
+  name VARCHAR(255),
+  bio TEXT,
+  content TEXT,
+  avatar TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### Tips Table
+```sql
+CREATE TABLE tips (
+  id SERIAL PRIMARY KEY,
+  tip_id VARCHAR(255) UNIQUE NOT NULL,
+  creator_id VARCHAR(255) NOT NULL,
+  tipper_address VARCHAR(42) NOT NULL,
+  amount VARCHAR(50) NOT NULL,
+  currency VARCHAR(10) NOT NULL DEFAULT 'ETH',
+  message TEXT,
+  transaction_hash VARCHAR(66),
+  status VARCHAR(20) DEFAULT 'pending',
+  timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  unlocked_content_id VARCHAR(255),
+  FOREIGN KEY (creator_id) REFERENCES creators(creator_id)
+);
+```
+
+#### Gated Content Table
+```sql
+CREATE TABLE gated_content (
+  id SERIAL PRIMARY KEY,
+  content_id VARCHAR(255) UNIQUE NOT NULL,
+  creator_id VARCHAR(255) NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  secret_content TEXT NOT NULL,
+  min_tip_amount VARCHAR(50) NOT NULL,
+  unlock_limit INTEGER,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  FOREIGN KEY (creator_id) REFERENCES creators(creator_id)
+);
+```
+
+### 5. Run the Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Architecture
 
